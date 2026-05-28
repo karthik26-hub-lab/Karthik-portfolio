@@ -1,0 +1,352 @@
+:root {
+    /* Light Ethereal Palette */
+    --bg-color: #F5F5F7;       /* Icy, Apple-esque light gray */
+    --text-main: #1D1D1F;      /* Deep charcoal for crisp readability */
+    --text-muted: #86868B;     /* Soft gray for secondary text */
+    --accent: #B0A3E8;         /* Soft lavender accent */
+    
+    /* Frosted Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.04); /* Very soft, feathery shadow */
+    --glow: rgba(176, 163, 232, 0.15);
+    
+    --font-heading: 'Syne', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Intro Splash Screen */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 9999999; /* Sits above absolutely everything */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.splash-text {
+    font-family: var(--font-heading);
+    color: var(--text-main);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    opacity: 0; /* Hidden initially so GSAP can fade it in smoothly */
+}
+
+.splash-year {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.noise-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.035;
+    background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+
+.ambient-glow {
+    position: fixed;
+    top: -10%; left: -10%;
+    width: 50vw; height: 50vw;
+    /* Soft Blush Pink */
+    background: radial-gradient(circle, rgba(255, 204, 213, 0.4) 0%, rgba(255,255,255,0) 60%);
+    filter: blur(90px);
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.ambient-glow.glow-2 {
+    top: auto; bottom: -20%; left: auto; right: -10%;
+    /* Soft Lavender */
+    background: radial-gradient(circle, rgba(200, 190, 255, 0.4) 0%, rgba(255,255,255,0) 60%);
+}
+
+/* Update the general glass utility */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--glass-shadow);
+}
+
+.navbar {
+    position: fixed;
+    top: 1.5rem; left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    z-index: 100;
+}
+
+/* Update the Navigation Bar */
+.nav-links {
+    background: rgba(255, 255, 255, 0.7); /* Light frosted pill */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    padding: 0.4rem;
+    display: flex;
+    gap: 0.25rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05); /* Softened shadow */
+}
+
+
+.nav-links a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+    opacity: 0.7;
+    padding: 0.6rem 1.5rem; /* Expanded link padding to create the pill shape */
+    border-radius: 100px;
+    /* Custom iOS-style spring easing for the hover/click transition */
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+    display: inline-block;
+}
+
+/* iOS Hover State (Subtle background pill) */
+.nav-links a:hover { 
+    opacity: 1; 
+    background: rgba(0, 0, 0, 0.04); /* Subtle gray highlight instead of white */
+}
+
+
+/* iOS Active/Clicking State (The physical "squish") */
+.nav-links a:active {
+    transform: scale(0.92);
+    background: rgba(0, 0, 0, 0.08); /* Deeper gray squish */
+    opacity: 1;
+}
+
+
+.btn {
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    padding: 1.4rem 3rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 100px;
+    transition: all 0.4s ease;
+}
+
+.submit-btn {
+    background: var(--text-main);
+    color: #FFFFFF; /* Inverts text to white on the dark button */
+}
+.glass-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+}
+
+h2.section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 600;
+    margin-bottom: 3rem;
+}
+
+/* HERO */
+.hero-section {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 0 5%;
+}
+.hero-content {
+    transform: translateY(-10vh); 
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.hero-profile { position: relative; margin-bottom: 2rem; }
+.profile-img-wrapper {
+    width: 180px; 
+    height: 180px;
+    border-radius: 50%;
+    padding: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    position: relative;
+    z-index: 2;
+}
+
+.hero-actions {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap; 
+}
+
+
+.profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.hero-title { font-family: var(--font-heading); font-size: 4.5rem; margin-bottom: 0.5rem; }
+.hero-subtitle { font-family: var(--font-body); font-size: 1.4rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+.hero-desc { max-width: 500px; color: var(--text-muted); font-size: 1.1rem; }
+
+/* ABOUT */
+.about-section { padding: 8rem 0; }
+.about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: center; }
+.about-text h2 { font-family: var(--font-heading); font-size: 3rem; margin-bottom: 2rem; }
+.about-text p { color: var(--text-muted); font-size: 1.35rem; margin-bottom: 2rem; }
+.about-card { padding: 3.5rem; }
+.about-card h3 { font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 1.5rem; }
+.focus-list { list-style: none; }
+.focus-list li { padding: 1rem 0; border-bottom: 1px solid var(--glass-border); color: var(--text-muted); }
+
+/* CAPABILITIES */
+.skills-section { padding: 6rem 0 8rem 0; }
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+.skill-card { padding: 2.5rem; }
+.skill-card h4 { font-family: var(--font-heading); font-size: 1.6rem; margin-bottom: 1.2rem; }
+.skill-card p { color: var(--text-muted); font-size: 1.15rem; }
+
+/* WORKS */
+.works-wrapper { padding: 8rem 0; }
+.works-container { display: flex; flex-direction: column; gap: 8rem; }
+.project-card { display: grid; grid-template-columns: 1fr 1.5fr; gap: 6rem; align-items: center; }
+.project-card.reverse { grid-template-columns: 1.5fr 1fr; }
+.project-card.reverse .project-image { order: 1; }
+.project-card.reverse .project-content { order: 2; }
+.project-image {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* This is the magic line! It forces a perfect widescreen box */
+    border-radius: 12px; /* Adjust if your corners are more or less rounded */
+    overflow: hidden;
+    position: relative;
+    background-color: var(--glass-bg); /* Fallback background */
+}
+
+.img-placeholder { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; color: var(--glass-border); font-family: var(--font-heading); font-size: 1.5rem; letter-spacing: 4px; font-weight: 700; }
+.project-content h3 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 1.5rem; }
+.project-content p { color: var(--text-muted); font-size: 1.3rem; margin-bottom: 3rem; }
+
+/* PROCESS */
+.process-section { padding: 8rem 0; }
+.process-sub { font-size: 1.4rem; color: var(--text-muted); margin-bottom: 4rem; }
+.process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; }
+.process-card { padding: 3.5rem 3rem; }
+.step-num { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 2rem; display: block; }
+.process-card h4 { font-size: 2rem; margin-bottom: 1.2rem; }
+.process-card p { font-size: 1.15rem; color: var(--text-muted); }
+
+/* CONTACT */
+.contact-section { padding: 6rem 0 8rem 0; }
+.contact-wrapper { max-width: 900px; margin: 0 auto; padding: 6rem 5rem; text-align: center; }
+.contact-sub { font-size: 1.4rem; color: var(--text-muted); margin-bottom: 4rem; }
+.contact-actions { display: flex; gap: 2rem; justify-content: center; margin-bottom: 5rem; }
+.contact-links { display: flex; justify-content: space-around; border-top: 1px solid var(--glass-border); padding-top: 4rem; }
+.link-item { display: flex; flex-direction: column; gap: 0.8rem; }
+.link-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); }
+.link-item a { color: var(--text-main); text-decoration: none; font-size: 1.2rem; font-family: var(--font-heading); }
+
+/* FOOTER */
+.footer { padding: 4rem 0; text-align: center; border-top: 1px solid var(--glass-border); }
+.footer p { color: var(--text-muted); }
+
+
+/* 4. Massive, confident profile picture for desktop screens */
+@media (min-width: 768px) {
+    .profile-img-wrapper {
+        width: 250px;
+        height: 250px;
+        padding: 10px;
+    }
+    
+    .hero-actions {
+        gap: 1.5rem;
+    }
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Stops the image from stretching or zooming in awkwardly */
+    display: block;
+}
+
+/* --- ETHEREAL INTERACTIVE GLOW & ZOOM EFFECTS --- */
+
+/* 1. Setup the smooth transition for all your boxes */
+.project-card, 
+.skill-card, 
+.capability-card, 
+.process-box {
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); 
+    border: 1px solid var(--glass-border); 
+}
+
+/* 2. The Glow & Main Card Zoom */
+.project-card:hover, .project-card:active,
+.skill-card:hover, .skill-card:active,
+.capability-card:hover, .capability-card:active,
+.process-box:hover, .process-box:active {
+    
+    /* Increased the scale to 1.02 for a more noticeable, satisfying pop */
+    transform: translateY(-4px) scale(1.02); 
+    border-color: rgba(200, 190, 255, 0.4); 
+    
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.04),         
+        0 0 25px rgba(200, 190, 255, 0.2),       
+        inset 0 0 15px rgba(255, 255, 255, 0.6); 
+}
+
+/* 3. Prepare the project images for the internal zoom */
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Add a smooth transition specifically for the image */
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+
+/* 4. The Internal Image Zoom Effect */
+.project-card:hover .project-image img,
+.project-card:active .project-image img {
+    /* The image slowly grows inside its frame when you touch the card */
+    transform: scale(1.06); 
+}
