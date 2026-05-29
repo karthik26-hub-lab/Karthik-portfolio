@@ -1,194 +1,321 @@
-// --- 1. SMOOTH SCROLLING (LENIS) ---
-const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-    smoothWheel: true
+// --- 1. GLOBAL THEME CHECK ---
+const savedTheme = localStorage.getItem('theme') || 'light';
+if (savedTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // ==========================================
+    // 2. BUTTERY SMOOTH PAGE ENTRY & SPLASH
+    // ==========================================
+    const splashScreen = document.querySelector('.splash-screen');
+    if (splashScreen) {
+        // If they already saw the splash screen, do a macOS smooth fade-in for the new page
+        if (sessionStorage.getItem('splashPlayed') === 'true') {
+            splashScreen.remove(); 
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo('.navbar', { opacity: 0, y: -15 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" });
+                // The classic Apple slight scale-up effect
+                gsap.fromTo('main', { opacity: 0, scale: 0.98, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.05 });
+            }
+        } else {
+            // First time loading the website: Play the Splash Animation
+            if (typeof gsap !== 'undefined') {
+                gsap.set('.navbar', { opacity: 0, y: -20 });
+                gsap.set('main', { opacity: 0 });
+                
+                const splashTl = gsap.timeline();
+                splashTl.to('.splash-text', { opacity: 1, duration: 1, ease: 'power2.out' })
+                        .to('.splash-text', { opacity: 0, duration: 0.5, delay: 0.6, ease: 'power2.in' })
+                        .to('.splash-screen', { 
+                            yPercent: -100, 
+                            duration: 1.2, 
+                            ease: 'power3.inOut',
+                            onComplete: () => {
+                                splashScreen.remove(); 
+                                sessionStorage.setItem('splashPlayed', 'true');
+                            }
+                        })
+                        .to('.navbar', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, "-=1.0")
+                        .to('main', { opacity: 1, duration: 1, ease: 'power3.out' }, "-=1.0");
+            } else {
+                splashScreen.remove();
+            }
+        }
+        
+        setTimeout(() => {
+            const stuckSplash = document.querySelector('.splash-screen');
+            if (stuckSplash) stuckSplash.remove();
+        }, 2500);
+    }
+
+    // ==========================================
+    // 3. DRAGGABLE THEME SWITCH
+    // ==========================================
+    const themeTrack = document.getElementById('themeTrack');
+    const themeIndicator = document.getElementById('themeIndicator');
+    const themeOptions = document.querySelectorAll('.theme-option');
+    let isThemeDragging = false;
+
+    if (themeTrack && themeIndicator && themeOptions.length > 0) {
+        let activeOption = Array.from(themeOptions).find(opt => opt.getAttribute('data-theme-val') === savedTheme) || themeOptions[0];
+
+        function updateThemeIndicator(element, animate = true) {
+            if (!element) return;
+            themeIndicator.style.transition = animate ? 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+            themeIndicator.style.transform = `translateX(${element.offsetLeft - themeOptions[0].offsetLeft}px)`;
+            
+            themeOptions.forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+
+            const themeVal = element.getAttribute('data-theme-val');
+            if (themeVal === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        setTimeout(() => updateThemeIndicator(activeOption, false), 50);
+
+        function handleThemeDrag(e) {
+            if (!isThemeDragging) return;
+            e.preventDefault();
+            let clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            let trackRect = themeTrack.getBoundingClientRect();
+            let relativeX = clientX - trackRect.left;
+
+            themeIndicator.style.transition = 'transform 0.15s ease-out'; 
+            let pillX = relativeX - (themeIndicator.offsetWidth / 2);
+            let maxDrag = trackRect.width - themeIndicator.offsetWidth - (themeOptions[0].offsetLeft * 2);
+            
+            if (pillX < 0) pillX = 0;
+            if (pillX > maxDrag) pillX = maxDrag;
+            
+            themeIndicator.style.transform = `translateX(${pillX}px)`;
+        }
+
+        function endThemeDrag(e) {
+            if (!isThemeDragging) return;
+            isThemeDragging = false;
+            
+            let clientX = e.type.includes('mouse') ? e.clientX : (e.changedTouches ? e.changedTouches[0].clientX : 0);
+            let trackRect = themeTrack.getBoundingClientRect();
+            let relativeX = clientX - trackRect.left;
+
+            let closestOption = themeOptions[0];
+            let minDistance = Infinity;
+
+            themeOptions.forEach(opt => {
+                let optCenter = opt.offsetLeft + (opt.offsetWidth / 2);
+                let distance = Math.abs(relativeX - optCenter);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestOption = opt;
+                }
+            });
+            updateThemeIndicator(closestOption);
+            
+            window.removeEventListener('mousemove', handleThemeDrag);
+            window.removeEventListener('touchmove', handleThemeDrag, {passive: false});
+            window.removeEventListener('mouseup', endThemeDrag);
+            window.removeEventListener('touchend', endThemeDrag);
+        }
+
+        function startThemeDrag(e) {
+            isThemeDragging = true;
+            handleThemeDrag(e);
+            window.addEventListener('mousemove', handleThemeDrag);
+            window.addEventListener('touchmove', handleThemeDrag, {passive: false});
+            window.addEventListener('mouseup', endThemeDrag);
+            window.addEventListener('touchend', endThemeDrag);
+        }
+
+        themeTrack.addEventListener('mousedown', startThemeDrag);
+        themeTrack.addEventListener('touchstart', startThemeDrag, {passive: false});
+
+        themeOptions.forEach(opt => {
+            opt.addEventListener('click', () => { updateThemeIndicator(opt); });
+        });
+    }
+
+    // ==========================================
+    // 4. MAIN NAVIGATION (Liquid Drag + Cinematic Transitions)
+    // ==========================================
+    const navTrack = document.getElementById('navTrack');
+    const navIndicator = document.getElementById('navIndicator');
+    const links = document.querySelectorAll('.nav-links a');
+    
+    if (navTrack && navIndicator && links.length > 0) {
+        
+        let currentPath = window.location.pathname.split('/').pop();
+        if (!currentPath || currentPath === '' || currentPath === '/') currentPath = 'index.html'; 
+
+        let activeLink = Array.from(links).find(link => link.getAttribute('href') === currentPath) || links[0];
+        let isNavDragging = false;
+        let didNavMove = false; 
+
+        function updateNavIndicator(element, animate = true) {
+            if (!element) return;
+            navIndicator.style.transition = animate ? 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)' : 'none';
+            navIndicator.style.width = `${element.offsetWidth}px`;
+            navIndicator.style.transform = `translateX(${element.offsetLeft}px)`;
+            
+            links.forEach(l => l.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        setTimeout(() => updateNavIndicator(activeLink, false), 50);
+
+        // --- THE CINEMATIC EXIT FUNCTION (Optimized for Mobile Zero-Lag) ---
+        function cinematicNavigate(targetUrl) {
+            if (typeof gsap !== 'undefined') {
+                // We removed the CPU-heavy 'scale' effect and sped it up to 0.15 seconds
+                gsap.to('main', { 
+                    opacity: 0, 
+                    duration: 0.15, 
+                    ease: 'power2.inOut', 
+                    onComplete: () => {
+                        window.location.assign(targetUrl); 
+                    }
+                });
+            } else {
+                window.location.assign(targetUrl);
+            }
+        }
+
+
+        // --- DRAG PHYSICS LOGIC ---
+        function handleNavDrag(e) {
+            if (!isNavDragging) return;
+            didNavMove = true; 
+            e.preventDefault(); 
+            
+            let clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            let trackRect = navTrack.getBoundingClientRect();
+            let relativeX = clientX - trackRect.left;
+
+            navIndicator.style.transition = 'none';
+            let pillX = relativeX - (navIndicator.offsetWidth / 2);
+            let maxDrag = trackRect.width - navIndicator.offsetWidth;
+            
+            if (pillX < 0) pillX = 0;
+            if (pillX > maxDrag) pillX = maxDrag;
+            
+            navIndicator.style.transform = `translateX(${pillX}px)`;
+        }
+
+        function endNavDrag(e) {
+            if (!isNavDragging) return;
+            isNavDragging = false;
+            
+            if (didNavMove) {
+                let clientX = e.type.includes('mouse') ? e.clientX : (e.changedTouches ? e.changedTouches[0].clientX : 0);
+                let trackRect = navTrack.getBoundingClientRect();
+                let relativeX = clientX - trackRect.left;
+
+                let closestLink = links[0];
+                let minDistance = Infinity;
+
+                links.forEach(link => {
+                    let linkCenter = link.offsetLeft + (link.offsetWidth / 2);
+                    let distance = Math.abs(relativeX - linkCenter);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestLink = link;
+                    }
+                });
+
+                updateNavIndicator(closestLink);
+                
+                let targetAttr = closestLink.getAttribute('href');
+                if (targetAttr !== currentPath) {
+                    cinematicNavigate(targetAttr); 
+                }
+            }
+            
+            window.removeEventListener('mousemove', handleNavDrag);
+            window.removeEventListener('touchmove', handleNavDrag);
+            window.removeEventListener('mouseup', endNavDrag);
+            window.removeEventListener('touchend', endNavDrag);
+        }
+
+        function startNavDrag(e) {
+            isNavDragging = true;
+            didNavMove = false; 
+            
+            window.addEventListener('mousemove', handleNavDrag);
+            window.addEventListener('touchmove', handleNavDrag, {passive: false});
+            window.addEventListener('mouseup', endNavDrag);
+            window.addEventListener('touchend', endNavDrag);
+        }
+
+        navTrack.addEventListener('mousedown', startNavDrag);
+        navTrack.addEventListener('touchstart', startNavDrag, {passive: false});
+
+        // --- BUTTON TAP LOGIC ---
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (didNavMove) {
+                    e.preventDefault();
+                    return;
+                }
+                
+                let targetAttr = link.getAttribute('href');
+                
+                if (targetAttr === currentPath) {
+                    e.preventDefault();
+                    updateNavIndicator(link);
+                } else {
+                    e.preventDefault();
+                    updateNavIndicator(link);
+                    cinematicNavigate(targetAttr); // Triggers the elegant fade out
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => updateNavIndicator(activeLink));
+    }
 });
 
-function raf(time) {
-    lenis.raf(time);
+// ==========================================
+// 5. LENIS SMOOTH SCROLLING & GSAP REVEALS
+// ==========================================
+if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smooth: true
+    });
+
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
 }
-requestAnimationFrame(raf);
 
-// Register GSAP ScrollTrigger
-gsap.registerPlugin(ScrollTrigger);
-
-// Sync Lenis with ScrollTrigger
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-gsap.ticker.lagSmoothing(0);
-
-
-// --- 2. PAGE ANIMATIONS (SCROLLTRIGGER) ---
-function initPageAnimations() {
-    const revealElements = gsap.utils.toArray('.reveal');
-    revealElements.forEach(el => {
-        gsap.fromTo(el, 
-            { y: 40, opacity: 0 }, 
+if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(element => {
+        gsap.fromTo(element, 
+            { opacity: 0, y: 30 },
             {
-                scrollTrigger: { trigger: el, start: "top 85%" },
-                y: 0, opacity: 1, duration: 1.2, ease: "power3.out"
+                opacity: 1, 
+                y: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
             }
         );
     });
-
-    const staggerGrids = ['.skills-grid', '.process-grid'];
-    staggerGrids.forEach(grid => {
-        const el = document.querySelector(grid);
-        if(el) {
-            ScrollTrigger.create({
-                trigger: el, start: "top 80%",
-                animation: gsap.fromTo(`${grid} .reveal-stagger`, 
-                    { y: 40, opacity: 0 }, 
-                    { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out" }
-                )
-            });
-        }
-    });
-
-    ScrollTrigger.refresh();
 }
-
-
-// --- 3. THE INITIAL BOOT SEQUENCE (SPLASH SCREEN) ---
-const splashScreen = document.querySelector('.splash-screen');
-
-if (splashScreen) {
-    // Hide Navbar and Main Content immediately on load
-    gsap.set('.navbar', { opacity: 0, y: -20 });
-    gsap.set('main', { opacity: 0 });
-    
-    const splashTl = gsap.timeline();
-    
-    splashTl.to('.splash-text', { opacity: 1, duration: 1, ease: 'power2.out' })
-            .to('.splash-text', { opacity: 0, duration: 0.5, delay: 0.6, ease: 'power2.in' })
-            .to('.splash-screen', { 
-                yPercent: -100, 
-                duration: 1.2, 
-                ease: 'power3.inOut',
-                // FIRE THE TEXT ANIMATION AS THE CURTAIN STARTS LIFTING
-                onStart: () => { initPageAnimations(); },
-                onComplete: () => gsap.set('.splash-screen', { display: 'none' })
-            })
-            // REVEAL NAVBAR AND MAIN CONTENT SIMULTANEOUSLY
-            .to('.navbar', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, "-=1.0")
-            .to('main', { opacity: 1, duration: 1, ease: 'power3.out' }, "-=1.0");
-} else {
-    // Standard load for pages without a splash screen
-    initPageAnimations();
-}
-
-
-// --- 4. MACOS STYLE SEAMLESS ROUTER ---
-let isTransitioning = false;
-
-async function navigateTo(url) {
-    if (isTransitioning) return;
-    
-    const currentFile = window.location.pathname.split('/').pop() || 'index.html';
-    const targetFile = url.split('/').pop() || 'index.html';
-    if (currentFile === targetFile) return;
-
-    isTransitioning = true;
-    const mainContent = document.querySelector('main');
-
-    // macOS Style Outro: Slight scale down and fade out
-    await gsap.to(mainContent, {
-        opacity: 0,
-        scale: 0.98,
-        duration: 0.4,
-        ease: 'power2.inOut'
-    });
-
-    try {
-        const response = await fetch(url);
-        const html = await response.text();
-        
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const newMain = doc.querySelector('main').innerHTML;
-        
-        mainContent.innerHTML = newMain;
-        history.pushState({}, '', url);
-        
-        window.scrollTo(0, 0);
-        lenis.scrollTo(0, { immediate: true });
-        
-        initPageAnimations();
-        
-        // macOS Style Intro: Fade in and scale up the new content
-        gsap.fromTo(mainContent, 
-            { opacity: 0, scale: 1.02 }, 
-            { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }
-        );
-        
-    } catch (error) {
-        console.error("Navigation failed:", error);
-        window.location.href = url; 
-    }
-    
-    setTimeout(() => { isTransitioning = false; }, 600);
-}
-
-// Intercept Navigation Links
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault(); 
-        navigateTo(this.getAttribute('href')); 
-    });
-});
-
-window.addEventListener('popstate', () => {
-    navigateTo(window.location.pathname.split('/').pop() || 'index.html');
-});
-
-
-// --- 5. DYNAMIC SCROLL & SWIPE GESTURES ---
-const pageSequence = ['index.html', 'about.html', 'capabilities.html', 'works.html', 'process.html', 'contact.html'];
-
-function getAdjacentPage(direction) {
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    const currentIndex = pageSequence.indexOf(currentPath) !== -1 ? pageSequence.indexOf(currentPath) : 0;
-    return direction === 'next' ? pageSequence[currentIndex + 1] : pageSequence[currentIndex - 1];
-}
-
-// Mouse Wheel (Harsh scroll up/down)
-window.addEventListener('wheel', (e) => {
-    if (Math.ceil(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 5) {
-        if (e.deltaY > 50 && getAdjacentPage('next')) navigateTo(getAdjacentPage('next'));
-    }
-    if (window.scrollY <= 5) {
-        if (e.deltaY < -50 && getAdjacentPage('prev')) navigateTo(getAdjacentPage('prev'));
-    }
-});
-
-// Mobile Touch / Swipe Gestures
-let touchStartX = 0;
-let touchStartY = 0;
-
-window.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-}, { passive: true });
-
-window.addEventListener('touchend', (e) => {
-    let touchEndX = e.changedTouches[0].clientX;
-    let touchEndY = e.changedTouches[0].clientY;
-
-    let deltaX = touchEndX - touchStartX;
-    let deltaY = touchEndY - touchStartY;
-
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        // Horizontal Swipe
-        if (deltaX < -50 && getAdjacentPage('next')) navigateTo(getAdjacentPage('next'));      // Swiped Left
-        else if (deltaX > 50 && getAdjacentPage('prev')) navigateTo(getAdjacentPage('prev'));  // Swiped Right
-    } else {
-        // Vertical Swipe
-        if (deltaY < -50 && Math.ceil(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 5) {
-            if (getAdjacentPage('next')) navigateTo(getAdjacentPage('next'));
-        } else if (deltaY > 50 && window.scrollY <= 5) {
-            if (getAdjacentPage('prev')) navigateTo(getAdjacentPage('prev'));
-        }
-    }
-});
