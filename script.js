@@ -1,16 +1,6 @@
-// --- 1. GLOBAL THEME CHECK ---
-const savedTheme = localStorage.getItem('theme') || 'light';
+Const savedTheme  = localStorage.getItem('theme') || 'light';
 if (savedTheme === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
-}
-
-// ==========================================
-// THE HAPTIC ENGINE (Safe Hardware API call)
-// ==========================================
-function triggerHaptic(duration = 15) {
-    if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        navigator.vibrate(duration);
-    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -86,8 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.documentElement.removeAttribute('data-theme');
                 localStorage.setItem('theme', 'light');
             }
-            
-            triggerHaptic(20); // HAPTIC: Theme switch click
         }
 
         setTimeout(() => updateThemeIndicator(activeOption, false), 50);
@@ -184,12 +172,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // --- THE CINEMATIC EXIT FUNCTION (Optimized for Mobile Zero-Lag) ---
         function cinematicNavigate(targetUrl) {
             if (typeof gsap !== 'undefined') {
+                // We removed the CPU-heavy 'scale' effect and sped it up to 0.15 seconds
                 gsap.to('main', { 
                     opacity: 0, 
                     duration: 0.15, 
                     ease: 'power2.inOut', 
                     onComplete: () => {
-                        window.location.assign(targetUrl); // FIXED: Uses the safe routing method
+                        window.location.assign(targetUrl); 
                     }
                 });
             } else {
@@ -242,11 +231,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 updateNavIndicator(closestLink);
                 
                 let targetAttr = closestLink.getAttribute('href');
-                let absoluteUrl = closestLink.href; // FIXED: Gets absolute URL for mobile apps
-                
                 if (targetAttr !== currentPath) {
-                    triggerHaptic(15); // HAPTIC: Drag complete
-                    cinematicNavigate(absoluteUrl); 
+                    cinematicNavigate(targetAttr); 
                 }
             }
             
@@ -263,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.addEventListener('mousemove', handleNavDrag);
             window.addEventListener('touchmove', handleNavDrag, {passive: false});
             window.addEventListener('mouseup', endNavDrag);
-            window.addEventListener('touchmove', endNavDrag);
+            window.addEventListener('touchend', endNavDrag);
         }
 
         navTrack.addEventListener('mousedown', startNavDrag);
@@ -278,9 +264,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 
                 let targetAttr = link.getAttribute('href');
-                let absoluteUrl = link.href; // FIXED: Gets absolute URL for mobile apps
-                
-                triggerHaptic(15); // HAPTIC: Navbar tap
                 
                 if (targetAttr === currentPath) {
                     e.preventDefault();
@@ -288,28 +271,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     e.preventDefault();
                     updateNavIndicator(link);
-                    cinematicNavigate(absoluteUrl); 
+                    cinematicNavigate(targetAttr); // Triggers the elegant fade out
                 }
             });
         });
 
         window.addEventListener('resize', () => updateNavIndicator(activeLink));
     }
-    
-    // ==========================================
-    // 5. GLOBAL BUTTON HAPTICS
-    // ==========================================
-    const allButtons = document.querySelectorAll('.btn, .submit-btn, .glass-btn');
-    allButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            triggerHaptic(25); // Heavy tick for action buttons
-        });
-    });
-
 });
 
 // ==========================================
-// 6. LENIS SMOOTH SCROLLING & GSAP REVEALS
+// 5. LENIS SMOOTH SCROLLING & GSAP REVEALS
 // ==========================================
 if (typeof Lenis !== 'undefined') {
     const lenis = new Lenis({
