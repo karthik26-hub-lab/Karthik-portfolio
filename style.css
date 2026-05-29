@@ -444,21 +444,26 @@ h2.section-title {
     transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); 
     border: 1px solid var(--glass-border); 
 }
-.project-card:hover, .project-card:active,
-.skill-card:hover, .skill-card:active,
-.about-card:hover, .about-card:active,
-.process-card:hover, .process-card:active {
-    transform: translateY(-4px) scale(1.02); 
-    border-color: rgba(200, 190, 255, 0.4); 
-    box-shadow: 
-        0 15px 35px rgba(0, 0, 0, 0.04),         
-        0 0 25px rgba(200, 190, 255, 0.2),       
-        inset 0 0 15px rgba(255, 255, 255, 0.6); 
+
+/* @media (hover: hover) ensures this ONLY happens on desktop computers with a mouse! */
+@media (hover: hover) {
+    .project-card:hover, 
+    .skill-card:hover, 
+    .about-card:hover, 
+    .process-card:hover {
+        transform: translateY(-4px) scale(1.02); 
+        border-color: rgba(200, 190, 255, 0.4); 
+        box-shadow: 
+            0 15px 35px rgba(0, 0, 0, 0.04),         
+            0 0 25px rgba(200, 190, 255, 0.2),       
+            inset 0 0 15px rgba(255, 255, 255, 0.6); 
+    }
+    
+    .project-card:hover .project-image img {
+        transform: scale(1.06); 
+    }
 }
-.project-card:hover .project-image img,
-.project-card:active .project-image img {
-    transform: scale(1.06); 
-}
+
 
 /* =========================================================
    DESKTOP SCALING (Expands layout on laptops & tablets)
