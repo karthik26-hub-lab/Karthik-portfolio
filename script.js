@@ -8,6 +8,7 @@ if (savedTheme === 'dark') {
 // THE HAPTIC ENGINE (Safe Hardware API call)
 // ==========================================
 function triggerHaptic(duration = 15) {
+    // Checks if the browser/device actually supports the vibration motor
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
         navigator.vibrate(duration);
     }
@@ -20,16 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     const splashScreen = document.querySelector('.splash-screen');
     if (splashScreen) {
-        // If they already saw the splash screen, do a macOS smooth fade-in for the new page
         if (sessionStorage.getItem('splashPlayed') === 'true') {
             splashScreen.remove(); 
             if (typeof gsap !== 'undefined') {
                 gsap.fromTo('.navbar', { opacity: 0, y: -15 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" });
-                // The classic Apple slight scale-up effect
                 gsap.fromTo('main', { opacity: 0, scale: 0.98, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.05 });
             }
         } else {
-            // First time loading the website: Play the Splash Animation
             if (typeof gsap !== 'undefined') {
                 gsap.set('.navbar', { opacity: 0, y: -20 });
                 gsap.set('main', { opacity: 0 });
@@ -87,7 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem('theme', 'light');
             }
             
-            triggerHaptic(20); // HAPTIC: Theme switch click
+            // HAPTIC: A solid 20ms tick when the theme successfully switches
+            triggerHaptic(20); 
         }
 
         setTimeout(() => updateThemeIndicator(activeOption, false), 50);
@@ -154,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 4. MAIN NAVIGATION (Liquid Drag + Cinematic Transitions)
+    // 4. MAIN NAVIGATION (Cinematic + Haptics)
     // ==========================================
     const navTrack = document.getElementById('navTrack');
     const navIndicator = document.getElementById('navIndicator');
@@ -181,7 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => updateNavIndicator(activeLink, false), 50);
 
-        // --- THE CINEMATIC EXIT FUNCTION (Optimized for Mobile Zero-Lag) ---
         function cinematicNavigate(targetUrl) {
             if (typeof gsap !== 'undefined') {
                 gsap.to('main', { 
@@ -189,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     duration: 0.15, 
                     ease: 'power2.inOut', 
                     onComplete: () => {
-                        window.location.assign(targetUrl); // FIXED: Uses the safe routing method
+                        window.location.assign(targetUrl); 
                     }
                 });
             } else {
@@ -197,8 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-
-        // --- DRAG PHYSICS LOGIC ---
         function handleNavDrag(e) {
             if (!isNavDragging) return;
             didNavMove = true; 
@@ -242,10 +238,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 updateNavIndicator(closestLink);
                 
                 let targetAttr = closestLink.getAttribute('href');
-                let absoluteUrl = closestLink.href; // FIXED: Gets absolute URL for mobile apps
+                let absoluteUrl = closestLink.href; 
                 
                 if (targetAttr !== currentPath) {
-                    triggerHaptic(15); // HAPTIC: Drag complete
+                    triggerHaptic(15); // HAPTIC: Light 15ms tap when drag drops on a new link
                     cinematicNavigate(absoluteUrl); 
                 }
             }
@@ -263,13 +259,12 @@ document.addEventListener("DOMContentLoaded", () => {
             window.addEventListener('mousemove', handleNavDrag);
             window.addEventListener('touchmove', handleNavDrag, {passive: false});
             window.addEventListener('mouseup', endNavDrag);
-            window.addEventListener('touchmove', endNavDrag);
+            window.addEventListener('touchend', endNavDrag);
         }
 
         navTrack.addEventListener('mousedown', startNavDrag);
         navTrack.addEventListener('touchstart', startNavDrag, {passive: false});
 
-        // --- BUTTON TAP LOGIC ---
         links.forEach(link => {
             link.addEventListener('click', (e) => {
                 if (didNavMove) {
@@ -278,9 +273,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 
                 let targetAttr = link.getAttribute('href');
-                let absoluteUrl = link.href; // FIXED: Gets absolute URL for mobile apps
+                let absoluteUrl = link.href; 
                 
-                triggerHaptic(15); // HAPTIC: Navbar tap
+                // HAPTIC: A crisp 15ms pulse when tapping any nav link
+                triggerHaptic(15);
                 
                 if (targetAttr === currentPath) {
                     e.preventDefault();
@@ -299,10 +295,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // 5. GLOBAL BUTTON HAPTICS
     // ==========================================
+    // Adds a heavier physical click to all major buttons across the site
     const allButtons = document.querySelectorAll('.btn, .submit-btn, .glass-btn');
     allButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            triggerHaptic(25); // Heavy tick for action buttons
+            triggerHaptic(25); // Slightly heavier 25ms buzz for main buttons
         });
     });
 
