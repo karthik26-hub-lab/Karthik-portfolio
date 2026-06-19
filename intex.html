@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Karthik V. - Frontend Architect</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Geist:wght@500&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffffff", "surface-container-lowest": "#000000", "on-surface-variant": "#c4c7c8", "primary-container": "#e2e2e2", "on-surface": "#e5e2e1"
+                    },
+                    spacing: { "margin-safe": "32px", "xl": "6rem", "lg": "3rem", "gutter": "24px" },
+                    fontFamily: {
+                        "body-lg": ["Inter"], "display-lg-mobile": ["Inter"], "body-md": ["Inter"], "label-mono": ["Geist"], "display-lg": ["Inter"], "headline-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-mono": ["12px", { "lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[color:#000000] text-on-surface antialiased relative selection:bg-white/20">
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <div id="intro-sequence">
+        <div id="lottie-intro-player" style="width: 85vw; max-w: 650px; height: 75vh; display: flex; align-items: center; justify-content: center;"></div>
+        <div id="intro-final">Engineered to be Explored</div>
+    </div>
+
+    <main class="opacity-0 transition-opacity duration-1000 ease-in relative z-10" id="main-content" style="display: none;">
+        
+        <header class="fixed top-8 left-0 right-0 z-50 flex items-center justify-center px-margin-safe transition-all duration-700 -translate-y-10 opacity-0 pointer-events-none" id="main-nav">
+            <div class="glass-nav rounded-full w-full max-w-3xl flex items-center justify-between px-6 py-3.5 shadow-2xl border border-white/15">
+                <span class="font-label-mono text-label-mono font-bold tracking-widest text-primary whitespace-nowrap">KARTHIK V</span>
+                <nav class="flex items-center gap-4 md:gap-8 font-label-mono text-[9px] md:text-[11px] tracking-widest uppercase">
+                    <a class="nav-link text-white/60 hover:text-white hover:opacity-100 transition-all duration-300" href="#about">About</a>
+                    <a class="nav-link text-white/60 hover:text-white hover:opacity-100 transition-all duration-300" href="#works">Works</a>
+                    <a class="nav-link text-white/60 hover:text-white hover:opacity-100 transition-all duration-300" href="#lab">Lab</a>
+                    <a class="nav-link text-white/60 hover:text-white hover:opacity-100 transition-all duration-300" href="#resume">Resume</a>
+                    <a class="nav-link text-white/60 hover:text-white hover:opacity-100 transition-all duration-300" href="#contact">Contact</a>
+                </nav>
+                <button class="md:hidden text-white/70 hover:text-white flex items-center justify-center transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">sort</span>
+                </button>
+            </div>
+        </header>
+      
+        <div id="home-trigger" class="h-[100vh] relative z-0">
+            <section id="home-wrapper" class="w-full h-full relative section-trigger" data-section="HOME" id="home">
+                <div class="absolute inset-0 wireframe-world flex items-center justify-center z-0 p-8">
+                    <div class="w-full max-w-5xl relative flex flex-col items-center">
+                        <div class="absolute -top-16 left-1/2 -translate-x-1/2 text-[10px] opacity-40 text-center tracking-widest uppercase">
+                            // Initializing Design System<br/>const role = "Frontend Architect";
+                        </div>
+                        <h1 class="font-display-lg-mobile md:text-[8vw] leading-none tracking-tighter border border-white/5 p-6 border-dashed text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.15)] select-none">
+                            KARTHIK V.
+                        </h1>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[1px] bg-white/5 border-dashed"></div>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[150vh] w-[1px] bg-white/5 border-dashed"></div>
+                    </div>
+                </div>
+
+                <div class="absolute inset-0 reality-world flex items-center justify-center overflow-hidden">
+                    <div class="absolute top-1/2 left-[40%] -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-[#5e17eb]/30 rounded-full blur-[140px] pointer-events-none z-0 mix-blend-screen transition-all duration-1000"></div>
+                    <div class="absolute top-1/2 left-[60%] -translate-x-1/2 -translate-y-1/2 w-[55vw] h-[55vw] bg-[#ec4899]/20 rounded-full blur-[120px] pointer-events-none z-0 mix-blend-screen transition-all duration-1000"></div>
+                    <div class="z-10 text-center flex flex-col items-center">
+                        <div class="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 flex items-center gap-2 shadow-[0_0_30px_rgba(236,72,153,0.15)]">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#ec4899] animate-pulse"></span>
+                            <span class="font-label-mono text-[9px] tracking-widest uppercase text-white/80">Available for Hire</span>
+                        </div>
+                        <h1 class="font-display-lg-mobile md:text-[8vw] text-white leading-none tracking-tighter font-black drop-shadow-2xl select-none">
+                            KARTHIK V.
+                        </h1>
+                        <p class="font-body-lg text-white/50 mt-8 max-w-md font-light text-[15px] tracking-wide">
+                            Engineered to be explored.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20 pointer-events-none opacity-40 mix-blend-difference">
+                    <span class="font-label-mono text-[9px] tracking-widest uppercase">Explore</span>
+                    <div class="w-[1px] h-16 bg-white/20 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1/2 bg-white animate-[scrolldown_2s_ease-in-out_infinite]"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="min-h-screen py-xl px-margin-safe flex items-center section-trigger bg-[#000000] relative z-20 border-t border-white/10" data-section="ABOUT" id="about">
+            <div class="max-w-6xl mx-auto w-full">
+                
+                <div class="mb-12 scroll-reveal">
+                    <span class="flex items-center gap-4 font-label-mono text-[10px] tracking-widest uppercase text-primary/60">
+                        <span class="w-8 h-[1px] bg-primary/40"></span> System Overview
+                    </span>
+                    <h2 class="font-display-lg-mobile md:font-headline-md text-primary mt-4 tracking-tight">The Architect.</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(220px,auto)]">
+                    
+                    <div class="glass-panel rounded-[2rem] flex flex-col justify-end relative overflow-hidden scroll-reveal group min-h-[240px]">
+                        <img src="profile.jpg" alt="Karthik V" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 z-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 pointer-events-none"></div>
+                        <div class="relative z-20 p-8 transform group-hover:-translate-y-2 transition-transform duration-500">
+                            <h3 class="font-body-lg text-white font-medium text-2xl mb-1">Karthik V.</h3>
+                            <p class="font-label-mono text-[10px] text-green-400 tracking-widest uppercase flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span> Frontend Engineer
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-8 md:p-10 rounded-[2rem] md:col-span-2 flex flex-col justify-center relative overflow-hidden scroll-reveal delay-100 group hover:border-white/20 transition-colors duration-500">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/4 pointer-events-none transition-transform duration-700 group-hover:scale-150"></div>
+                        <span class="material-symbols-outlined text-primary/30 text-4xl mb-6 z-10">memory</span>
+                        <h3 class="font-display-lg-mobile md:text-[32px] text-primary leading-tight mb-4 tracking-tight z-10">Logic to Interface.<br/><span class="text-on-surface-variant opacity-60">Seamlessly.</span></h3>
+                        <p class="font-body-lg text-on-surface-variant opacity-70 leading-relaxed max-w-xl font-light z-10 text-[15px]">
+                            Bridging the precision of hardware logic with high-fidelity frontend architectures. I engineer digital experiences that are structurally sound, highly optimized, and visually immaculate.
+                        </p>
+                    </div>
+
+<div class="glass-panel p-8 rounded-[2rem] flex flex-col scroll-reveal delay-200 overflow-hidden relative group min-h-[240px]">
+                        <div class="flex justify-between items-center mb-6 z-10">
+                            <span class="font-label-mono text-[10px] tracking-widest uppercase text-primary/50 block">Execution Flow</span>
+                            <span class="material-symbols-outlined text-white/20 text-[16px]">account_tree</span>
+                        </div>
+                        
+                        <div class="relative flex-1 flex flex-col gap-6 z-10 ml-2 mt-2">
+                            <div class="absolute left-[7px] top-2 bottom-4 w-[2px] bg-gradient-to-b from-white/20 via-white/10 to-transparent z-0"></div>
+                            
+                            <div class="relative z-10 flex items-center gap-5 group/step">
+                                <div class="w-4 h-4 rounded-full bg-black border-2 border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)] transition-transform group-hover/step:scale-125"></div>
+                                <div>
+                                    <p class="font-body-md text-white text-[14px] leading-none mb-1 group-hover/step:text-cyan-400 transition-colors">System Logic</p>
+                                    <p class="font-label-mono text-[9px] text-white/40 uppercase tracking-widest">Architecture</p>
+                                </div>
+                            </div>
+
+                            <div class="relative z-10 flex items-center gap-5 group/step">
+                                <div class="w-4 h-4 rounded-full bg-black border-2 border-purple-400 shadow-[0_0_10px_rgba(192,132,252,0.5)] transition-transform group-hover/step:scale-125"></div>
+                                <div>
+                                    <p class="font-body-md text-white text-[14px] leading-none mb-1 group-hover/step:text-purple-400 transition-colors">Interface Design</p>
+                                    <p class="font-label-mono text-[9px] text-white/40 uppercase tracking-widest">Prototyping</p>
+                                </div>
+                            </div>
+
+                            <div class="relative z-10 flex items-center gap-5 group/step">
+                                <div class="w-4 h-4 rounded-full bg-black border-2 border-green-400 shadow-[0_0_10px_rgba(74,222,128,0.5)] transition-transform group-hover/step:scale-125"></div>
+                                <div>
+                                    <p class="font-body-md text-white text-[14px] leading-none mb-1 group-hover/step:text-green-400 transition-colors">Pixel-Perfect Build</p>
+                                    <p class="font-label-mono text-[9px] text-white/40 uppercase tracking-widest">Code Execution</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-[2rem] flex flex-col justify-center scroll-reveal delay-300">
+                        <span class="font-label-mono text-[10px] tracking-widest uppercase text-primary/50 mb-6 block">Arsenal</span>
+                        <div class="flex flex-wrap gap-2.5">
+                            <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 font-label-mono text-[10px] text-primary/70 hover:text-white hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300 cursor-default">REACT.JS</span>
+                            <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 font-label-mono text-[10px] text-primary/70 hover:text-white hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300 cursor-default">TAILWIND CSS</span>
+                            <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 font-label-mono text-[10px] text-primary/70 hover:text-white hover:border-yellow-400 hover:shadow-[0_0_15px_rgba(250,204,21,0.4)] transition-all duration-300 cursor-default">JAVASCRIPT</span>
+                            <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 font-label-mono text-[10px] text-primary/70 hover:text-white hover:border-orange-500 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)] transition-all duration-300 cursor-default">HTML5</span>
+                            <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 font-label-mono text-[10px] text-primary/70 hover:text-white hover:border-purple-400 hover:shadow-[0_0_15px_rgba(192,132,252,0.4)] transition-all duration-300 cursor-default">FIGMA</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6 md:p-8 rounded-[2rem] flex flex-row items-center justify-center scroll-reveal delay-400 group relative">
+                        <div class="flex items-center gap-2 md:gap-3">
+                            <div class="flip-card" id="flip-hour" data-val="12">12</div>
+                            <span class="text-white/20 text-2xl font-label-mono animate-pulse pb-1">:</span>
+                            
+                            <div class="flip-card" id="flip-min" data-val="00">00</div>
+                            <span class="text-white/20 text-2xl font-label-mono animate-pulse pb-1">:</span>
+                            
+                            <div class="flip-card text-cyan-400" id="flip-sec" data-val="00">00</div>
+                            
+                            <div class="ml-3 flex flex-col justify-center">
+                                <span id="flip-ampm" class="font-label-mono text-white text-lg tracking-widest font-bold mb-1">AM</span>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span>
+                                    <span class="font-label-mono text-[7px] text-white/50 tracking-widest uppercase">IST / Chennai</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>        </section>
+<section class="h-[400vh] relative w-full border-t border-white/10 bg-[#000]" id="works-container">
+            <div class="sticky top-0 h-screen overflow-hidden flex items-center section-trigger" data-section="WORKS" id="works">
+                <div class="max-w-6xl mx-auto w-full px-margin-safe flex flex-col md:flex-row items-center justify-between gap-12 md:gap-8 h-full py-20">
+                    
+                    <div class="w-full md:w-5/12 z-20 flex-shrink-0 mt-[-10vh]">
+                        <span class="flex items-center gap-4 font-label-mono text-[10px] tracking-widest uppercase text-primary/60 mb-6">
+                            <span class="w-8 h-[1px] bg-primary/40"></span> Selected Works
+                        </span>
+                        <h2 class="font-display-lg-mobile md:text-[64px] text-primary mb-6 tracking-tight leading-tight">Featured <br/>Projects.</h2>
+                        <p class="font-body-lg text-on-surface-variant opacity-70 mb-8 font-light">A curated selection of high-fidelity interfaces and performant frontend architectures.</p>
+                    </div>
+
+                    <div class="w-full md:w-7/12 h-[50vh] md:h-[65vh] relative overflow-hidden rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 glass-panel">
+                        
+                        <div class="absolute inset-0 w-full h-full z-10 bg-[#0a0a0a]" id="h-card-1">
+                            <div class="w-full h-full relative transition-transform duration-75 will-change-transform" id="h-card-1-inner" style="transform-origin: center center;">
+                                <img src="https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover grayscale opacity-40 z-0">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
+                                
+                                <div class="absolute bottom-0 left-0 right-0 p-8 md:p-10 z-20">
+                                    <div class="flex justify-between items-end mb-4">
+                                        <div>
+                                            <h3 class="font-body-lg text-3xl md:text-4xl text-white mb-2 font-semibold tracking-tight">Aura OS</h3>
+                                            <p class="font-label-mono text-[10px] md:text-[12px] text-cyan-400 tracking-widest uppercase">Spatial Interface</p>
+                                        </div>
+                                        <div class="text-right hidden sm:block">
+                                            <p class="font-label-mono text-[8px] text-white/40 tracking-widest uppercase mb-1">Execution Flow</p>
+                                            <p class="font-label-mono text-[10px] text-white/80">UX <span class="text-white/30 mx-1">→</span> Logic <span class="text-white/30 mx-1">→</span> Build</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-[1px] bg-white/10 mb-5"></div>
+                                    <div class="flex gap-2 md:gap-3">
+                                        <span class="px-3 py-1.5 rounded-lg bg-white/10 text-[9px] md:text-[10px] text-white/90 font-label-mono border border-white/10 backdrop-blur-md">REACT</span>
+                                        <span class="px-3 py-1.5 rounded-lg bg-white/10 text-[9px] md:text-[10px] text-white/90 font-label-mono border border-white/10 backdrop-blur-md">THREE.JS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="absolute inset-0 w-full h-full z-20 bg-[#0a0a0a] translate-x-full shadow-[-30px_0_50px_rgba(0,0,0,0.8)] border-l border-white/10 will-change-transform" id="h-card-2">
+                            <div class="w-full h-full relative transition-transform duration-75 will-change-transform" id="h-card-2-inner" style="transform-origin: center center;">
+                                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover grayscale opacity-40 z-0">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
+                                
+                                <div class="absolute bottom-0 left-0 right-0 p-8 md:p-10 z-20">
+                                    <div class="flex justify-between items-end mb-4">
+                                        <div>
+                                            <h3 class="font-body-lg text-3xl md:text-4xl text-white mb-2 font-semibold tracking-tight">NXT FinTech</h3>
+                                            <p class="font-label-mono text-[10px] md:text-[12px] text-purple-400 tracking-widest uppercase">Mobile App Design</p>
+                                        </div>
+                                        <div class="text-right hidden sm:block">
+                                            <p class="font-label-mono text-[8px] text-white/40 tracking-widest uppercase mb-1">Execution Flow</p>
+                                            <p class="font-label-mono text-[10px] text-white/80">Research <span class="text-white/30 mx-1">→</span> Figma <span class="text-white/30 mx-1">→</span> UI</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-[1px] bg-white/10 mb-5"></div>
+                                    <div class="flex gap-2 md:gap-3">
+                                        <span class="px-3 py-1.5 rounded-lg bg-white/10 text-[9px] md:text-[10px] text-white/90 font-label-mono border border-white/10 backdrop-blur-md">FIGMA</span>
+                                        <span class="px-3 py-1.5 rounded-lg bg-white/10 text-[9px] md:text-[10px] text-white/90 font-label-mono border border-white/10 backdrop-blur-md">TAILWIND</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+<div class="absolute inset-0 w-full h-full z-30 bg-[#0a0a0a] translate-x-full shadow-[-30px_0_50px_rgba(0,0,0,0.8)] border-l border-white/10 will-change-transform" id="h-card-3">
+                            <div class="w-full h-full relative transition-transform duration-75 will-change-transform" id="h-card-3-inner" style="transform-origin: center center;">
+                                <img src="https://images.unsplash.com/photo-1627398225058-61852b591b94?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover grayscale opacity-40 z-0">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
+                                
+                                <div class="absolute bottom-0 left-0 right-0 p-8 md:p-10 z-20 flex flex-col justify-end h-full">
+                                    <div class="flex justify-between items-end mb-4">
+                                        <div>
+                                            <h3 class="font-body-lg text-3xl md:text-4xl text-white mb-2 font-semibold tracking-tight">Syntax UI</h3>
+                                            <p class="font-label-mono text-[10px] md:text-[12px] text-green-400 tracking-widest uppercase">Component Library</p>
+                                        </div>
+                                        <div class="text-right hidden sm:block">
+                                            <p class="font-label-mono text-[8px] text-white/40 tracking-widest uppercase mb-1">Execution Flow</p>
+                                            <p class="font-label-mono text-[10px] text-white/80">Arch <span class="text-white/30 mx-1">→</span> Code <span class="text-white/30 mx-1">→</span> NPM</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="w-full h-[1px] bg-white/10 mb-6"></div>
+                                    
+                                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                                        <div class="flex gap-2 md:gap-3">
+                                            <span class="px-3 py-1.5 rounded-lg bg-white/10 text-[9px] md:text-[10px] text-white/90 font-label-mono border border-white/10 backdrop-blur-md">JAVASCRIPT</span>
+                                            <span class="px-3 py-1.5 rounded-lg bg-white/10 text-[9px] md:text-[10px] text-white/90 font-label-mono border border-white/10 backdrop-blur-md">CSS3</span>
+                                        </div>
+                                        
+                                        <button class="relative overflow-hidden group/liquid px-8 py-4 md:py-5 rounded-2xl bg-white/5 backdrop-blur-[40px] border border-white/20 border-t-white/40 border-l-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.5),inset_0_1px_0_0_rgba(255,255,255,0.2)] transition-all duration-500 hover:scale-[1.03] hover:bg-white/10 hover:shadow-[0_0_40px_rgba(34,211,238,0.2)] w-full md:w-auto flex justify-center items-center gap-3 cursor-pointer">
+                                            
+                                            <div class="absolute inset-0 w-[50%] bg-gradient-to-r from-transparent via-white/30 to-transparent mix-blend-overlay animate-liquid pointer-events-none"></div>
+                                            
+                                            <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover/liquid:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+                                            <span class="relative z-10 font-label-mono text-[12px] md:text-[14px] tracking-widest uppercase text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">Explore Projects</span>
+                                            <span class="relative z-10 material-symbols-outlined text-[20px] text-cyan-300 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] group-hover/liquid:translate-x-2 transition-transform duration-300">travel_explore</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="h-[200vh] relative w-full" id="lab-container">
+            <div class="sticky top-0 h-screen overflow-hidden flex flex-col justify-center section-trigger" data-section="LAB" id="lab">
+                <div class="w-full max-w-7xl mx-auto px-margin-safe mb-10 md:mb-16 scroll-reveal flex-shrink-0">
+                    <span class="material-symbols-outlined text-primary/30 text-6xl mb-6">science</span>
+                    <h2 class="font-headline-md text-headline-md text-primary mb-4">The Laboratory</h2>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant opacity-70 mb-4 max-w-2xl">Unstructured thoughts, half-finished shaders, and conceptual design tests.</p>
+                </div>
+                <div class="flex gap-6 px-margin-safe w-max h-[40vh] transition-transform duration-75 ease-out will-change-transform items-center" id="lab-track">
+                    <div class="w-[70vw] md:w-[35vw] h-full flex flex-col items-center justify-center glass-panel rounded-xl border border-white/5 cursor-not-allowed opacity-50 hover-lift flex-shrink-0 scroll-reveal p-8 text-center">
+                        <span class="material-symbols-outlined text-primary/30 text-4xl mb-4">lock</span>
+                        <span class="font-label-mono text-label-mono tracking-widest text-primary">ACCESS RESTRICTED [WIP]</span>
+                    </div>
+                    <div class="w-[70vw] md:w-[35vw] h-full flex flex-col items-center justify-center glass-panel rounded-xl border border-white/5 cursor-not-allowed opacity-50 hover-lift flex-shrink-0 scroll-reveal delay-100 p-8 text-center">
+                        <span class="material-symbols-outlined text-primary/30 text-4xl mb-4">view_in_ar</span>
+                        <span class="font-label-mono text-label-mono tracking-widest text-primary">EXP_001_SHADER</span>
+                    </div>
+                    <div class="w-[70vw] md:w-[35vw] h-full flex flex-col items-center justify-center glass-panel rounded-xl border border-white/5 cursor-not-allowed opacity-50 hover-lift flex-shrink-0 scroll-reveal delay-200 p-8 text-center">
+                        <span class="material-symbols-outlined text-primary/30 text-4xl mb-4">waves</span>
+                        <span class="font-label-mono text-label-mono tracking-widest text-primary">EXP_002_FLUIDS</span>
+                    </div>
+                    <div class="w-[4rem] h-full flex-shrink-0 opacity-0 pointer-events-none"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-xl px-margin-safe section-trigger" data-section="RESUME" id="resume">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-16 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/10 pb-6 scroll-reveal">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md text-primary">Curriculum Vitae</h2>
+                        <p class="font-label-mono text-label-mono text-on-surface-variant opacity-60 mt-2">FRONTEND ENGINEER & UI/UX DESIGNER</p>
+                    </div>
+                    <a href="#" class="mt-6 md:mt-0 flex items-center gap-2 font-label-mono text-[12px] border border-white/20 px-5 py-2.5 rounded-full hover:bg-white/10 hover:border-primary transition-all duration-300 text-primary">
+                        <span class="material-symbols-outlined text-[16px]">download</span> DOWNLOAD PDF
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+                    <div class="md:col-span-4 space-y-12 scroll-reveal delay-100">
+                        <div>
+                            <h3 class="font-label-mono text-label-mono text-primary/50 mb-5 tracking-widest uppercase">Education</h3>
+                            <div class="mb-4 group">
+                                <h4 class="font-body-md text-primary font-bold group-hover:text-white transition-colors">B.E. Electronics & Communication</h4>
+                                <p class="font-body-md text-sm text-on-surface-variant opacity-80 mt-1">SRM INSTITUTE OF SCIENCE AND TECHNOLOGY</p>
+                                <p class="font-label-mono text-[10px] text-on-surface-variant opacity-50 mt-2">2024 — 2028</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-label-mono text-label-mono text-primary/50 mb-5 tracking-widest uppercase">Core Skills</h3>
+                            <div class="flex flex-col gap-4 font-body-md text-sm text-on-surface-variant opacity-90">
+                                <div>
+                                    <strong class="text-primary font-medium block mb-1">UI/UX Design:</strong>
+                                    <span class="opacity-80">Figma, Wireframing, Prototyping, Design Systems, User Research</span>
+                                </div>
+                                <div>
+                                    <strong class="text-primary font-medium block mb-1">Frontend Development:</strong>
+                                    <span class="opacity-80">HTML5, CSS3, JavaScript (ES6+), React.js, Tailwind CSS</span>
+                                </div>
+                                <div>
+                                    <strong class="text-primary font-medium block mb-1">Animation & Tools:</strong>
+                                    <span class="opacity-80">Framer Motion, Lottie, Git/GitHub, Vercel</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-8 space-y-12 scroll-reveal delay-200">
+                        <div>
+                            <h3 class="font-label-mono text-label-mono text-primary/50 mb-6 tracking-widest uppercase">Experience & Selected Works</h3>
+                            
+                            <div class="mb-10 group">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                                    <h4 class="font-body-lg text-primary font-bold">Aura OS Interface</h4>
+                                    <time class="font-label-mono text-[10px] text-on-surface-variant opacity-60 mt-1 md:mt-0 whitespace-nowrap md:text-right">RECENT PROJECT</time>
+                                </div>
+                                <h5 class="font-label-mono text-[11px] text-primary/70 mb-4 tracking-wide">UI/UX DESIGN & FRONTEND BUILD</h5>
+                                <ul class="list-disc list-outside ml-4 font-body-md text-sm text-on-surface-variant opacity-80 space-y-2.5">
+                                    <li>Designed a high-fidelity spatial computing dashboard concept using Figma, focusing on brutalist aesthetics and glassmorphism.</li>
+                                    <li>Translated design mockups into a fully responsive React application styled with Tailwind CSS.</li>
+                                    <li>Implemented smooth micro-interactions and scroll-reveal animations to enhance user engagement.</li>
+                                </ul>
+                            </div>
+
+                            <div class="mb-10 group">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                                    <h4 class="font-body-lg text-primary font-bold">FinTech Mobile App Concept</h4>
+                                    <time class="font-label-mono text-[10px] text-on-surface-variant opacity-60 mt-1 md:mt-0 whitespace-nowrap md:text-right">CASE STUDY</time>
+                                </div>
+                                <h5 class="font-label-mono text-[11px] text-primary/70 mb-4 tracking-wide">PRODUCT DESIGNER</h5>
+                                <ul class="list-disc list-outside ml-4 font-body-md text-sm text-on-surface-variant opacity-80 space-y-2.5">
+                                    <li>Conducted user research to identify pain points in personal finance management apps.</li>
+                                    <li>Created comprehensive wireframes and interactive prototypes with a focus on accessibility and cognitive load reduction.</li>
+                                    <li>Established a scalable design system for seamless developer handoff.</li>
+                                </ul>
+                            </div>
+
+                            <div class="mb-2 group">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                                    <h4 class="font-body-lg text-primary font-bold">Syntax UI Components</h4>
+                                    <time class="font-label-mono text-[10px] text-on-surface-variant opacity-60 mt-1 md:mt-0 whitespace-nowrap md:text-right">OPEN SOURCE</time>
+                                </div>
+                                <h5 class="font-label-mono text-[11px] text-primary/70 mb-4 tracking-wide">CREATIVE DEVELOPER</h5>
+                                <ul class="list-disc list-outside ml-4 font-body-md text-sm text-on-surface-variant opacity-80 space-y-2.5">
+                                    <li>Built a collection of accessible, headless UI components tailored for modern web applications.</li>
+                                    <li>Integrated advanced CSS techniques including CSS grid layouts, custom variables, and optimized Lottie animations.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-xl px-margin-safe section-trigger border-t border-white/5 relative" data-section="CONTACT" id="contact">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8 items-center">
+                    
+                    <div class="scroll-reveal">
+                        <span class="material-symbols-outlined text-primary/30 text-4xl mb-6 block">alternate_email</span>
+                        <h2 class="font-display-lg-mobile md:font-display-lg text-primary mb-6 leading-tight">Let's create <br/><span class="text-on-surface-variant opacity-50">together.</span></h2>
+                        <p class="font-body-lg text-on-surface-variant opacity-80 max-w-md mb-12">I'm currently available for freelance work and open to new opportunities. Reach out if you want to build something impactful.</p>
+                        
+                        <div class="space-y-4">
+                            <p class="font-label-mono text-label-mono text-primary/50 tracking-widest uppercase">Direct Line</p>
+                            <a class="font-body-lg text-primary hover:text-white transition-colors border-b border-white/20 hover:border-primary pb-1 inline-block" href="mailto:hello@example.com">hello@precision.dev</a>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-8 md:p-10 rounded-2xl scroll-reveal delay-100 relative overflow-hidden group">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                        
+                        <form class="space-y-8" onsubmit="event.preventDefault();">
+                            <div class="relative">
+                                <input class="peer w-full bg-transparent border-0 border-b border-white/20 px-0 py-3 text-primary focus:ring-0 focus:border-white transition-colors placeholder-transparent outline-none" id="name" placeholder="Name" required="" type="text"/>
+                                <label class="absolute left-0 top-3 font-body-md text-on-surface-variant opacity-60 transition-all pointer-events-none peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-5 peer-focus:text-[12px] peer-focus:text-white peer-valid:-top-5 peer-valid:text-[12px] peer-valid:text-white/60" for="name">Your Name</label>
+                            </div>
+                            
+                            <div class="relative">
+                                <input class="peer w-full bg-transparent border-0 border-b border-white/20 px-0 py-3 text-primary focus:ring-0 focus:border-white transition-colors placeholder-transparent outline-none" id="email" placeholder="Email" required="" type="email"/>
+                                <label class="absolute left-0 top-3 font-body-md text-on-surface-variant opacity-60 transition-all pointer-events-none peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-5 peer-focus:text-[12px] peer-focus:text-white peer-valid:-top-5 peer-valid:text-[12px] peer-valid:text-white/60" for="email">Email Address</label>
+                            </div>
+
+                            <div class="relative">
+                                <textarea class="peer w-full bg-transparent border-0 border-b border-white/20 px-0 py-3 text-primary focus:ring-0 focus:border-white transition-colors placeholder-transparent outline-none resize-none" id="message" placeholder="Message" required="" rows="3"></textarea>
+                                <label class="absolute left-0 top-3 font-body-md text-on-surface-variant opacity-60 transition-all pointer-events-none peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-5 peer-focus:text-[12px] peer-focus:text-white peer-valid:-top-5 peer-valid:text-[12px] peer-valid:text-white/60" for="message">Project Details</label>
+                            </div>
+
+                            <button class="w-full flex items-center justify-center gap-2 bg-primary text-black font-label-mono text-label-mono font-bold py-4 rounded-xl hover:bg-white/90 hover:scale-[1.02] transition-all duration-300 mt-4" type="submit">
+                                SEND MESSAGE <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="w-full flex flex-col md:flex-row justify-between items-center gap-6 opacity-50 mt-24 pt-8 border-t border-white/10 scroll-reveal delay-200">
+                    <span class="font-label-mono text-label-mono text-on-surface">© 2024 ENGINEERED WITH PRECISION</span>
+                    <div class="flex gap-6">
+                        <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-white transition-colors ease-in-out duration-200" href="#">GITHUB</a>
+                        <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-white transition-colors ease-in-out duration-200" href="#">LINKEDIN</a>
+                        <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-white transition-colors ease-in-out duration-200" href="#">READ.CV</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
